@@ -1,8 +1,10 @@
 package com.inks.hb.login.service;
 
+import com.inks.hb.common.CaptchaImageUtil;
 import com.inks.hb.common.MD5;
 import com.inks.hb.login.dao.LoginDao;
 import com.inks.hb.login.pojo.Login;
+import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,10 +15,13 @@ public class LoginServiceImpl implements LoginService {
 
     private MD5 md5 = new MD5();
 
+
+
     @Override
     public int queryByName(String name, String pwd) throws SQLException {
         Login loginQuery = new Login(name, pwd);
         Login login = (Login) dao.query(loginQuery);
+
         int check = 0;  //密码错误
         if (login.getLoginId() == 0)
             check = -1; //账户不存在

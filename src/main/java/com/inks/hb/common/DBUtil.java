@@ -31,6 +31,14 @@ public class DBUtil {
      * @return Connection 连接对象
      * @throws SQLException 数据库错误
      */
+    public static void main(String[] args) {
+        try {
+            Connection connection = DBUtil.getConnection();
+            System.out.println(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static Connection getConnection() throws SQLException {
         // 从threadLocal获得连接对象
         Connection conn = threadLocal.get();

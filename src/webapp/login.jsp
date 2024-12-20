@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<title>酒店管理系统</title>
 		<link rel="stylesheet Icon" type=" image/x-icon" href="img/windows.ico">
-		<link rel="stylesheet" type="text/css" href="css/login/register-login.css">
+		<link rel="stylesheet" type="text/css" href="css/login/register-login.css?version=1.3">
 		<script src="./js/global.js"></script>
 	</head>
 
@@ -34,6 +34,13 @@
 						<!--密码输入框-->
 						<div class="group-ipt loginPwd">
 							<input type="password" name="loginPwd" id="loginPwd" class="ipt" placeholder="输入您的登录密码" required>
+						</div>
+						<!--验证码输入框-->
+						<div class="group-ipt loginCode">
+							<input type="text" name="loginCode" id="loginCode" class="ipt" placeholder="输入验证码" required>
+							<div class="code" id="code">
+								<img src="${pageContext.request.contextPath}/captcha" class="captcha">
+							</div>
 						</div>
 					</div>
 					<!--登录按钮-->
@@ -76,23 +83,38 @@
 				var layer = layui.layer;
 				$(document).ready(function() {
 					//alert("网页加载完毕");
-
+					$('.captcha').click(function (){
+						//生成随机时间戳
+						var timestamp = new Date().getTime();
+						//更新图片位置
+						$(this).attr('src',baseUrl + '/captcha?t=' + timestamp)
+					})
 					//按钮点击事件
 					$('#btnLogin').click(function() {
-						//alert("按钮被点击");
 
-						loginName = $('#loginName').val();
+
+						var loginName = $('#loginName').val();
 						var loginPwd = $('#loginPwd').val();
-						var params = "loginName=" + loginName + "&loginPwd=" + loginPwd;
-
+						var loginCode = $('#loginCode').val();
+						var params = "loginName=" + loginName + "&loginPwd=" + loginPwd + "&loginCode=" + loginCode;
 						if(loginName === "")
 							layer.tips("请输入用户名", "#loginName"); //layer.tips(“string","#吸附容器")
 						else if(loginPwd === "")
 							layer.tips("请输入密码", "#loginPwd");
+						else if(loginCode === "") {
+							layer.tips("请输入验证码", "#loginCode", {tips: 4});
+						}
 						else {
+
 							//发出ajax请求，调用后端功能
+							// alert("按钮被点击");
 							$.post(baseUrl + '/QueryLoginNameServlet', params, function(data) {
-								if(data === '-1')
+								console.log(data)
+								if(data === '-2')
+									layer.msg("验证码错误", {
+										anim: 6
+									});
+								else if(data === '-1')
 									layer.msg("用户名不存在", {
 										anim: 6
 									});

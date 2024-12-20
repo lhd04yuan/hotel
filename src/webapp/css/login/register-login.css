@@ -148,7 +148,21 @@ canvas {
 	margin: 0;
 	overflow: hidden;
 }
+.loginCode{
+	display: flex;
+}
+#loginCode{
+	flex: 70%;
+}
+.code{
+	padding-top: 1px;
+	flex: 30%;
 
+}
+/*.captcha{*/
+/*	width: 100%; !* 宽度为父元素的50% *!*/
+/*	!*height: auto; !* 高度自动调整以保持宽高比 *!*!*/
+/*}*/
 .form .group .group-ipt input {
 	padding: 1em .8em;
 	width: 100%;
@@ -177,7 +191,9 @@ canvas {
 #loginPwd,
 #verify,
 #user,
-#password1 {
+#password1,
+#loginCode,
+#code{
 	border-top: 1px solid #e8e8e8;
 }
 

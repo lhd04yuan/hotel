@@ -40,6 +40,8 @@ public class CommonFilter implements Filter {
         // 判断登录请求的servlet不过滤
         if (url.endsWith("/hb/QueryLoginNameServlet"))
             check = false;
+        if (url.endsWith("/hb/FrontCodeImageServlet"))
+            check = false;
 
         if (!url.equals("/hb") && check) {
             // 判断session中此值是否存在

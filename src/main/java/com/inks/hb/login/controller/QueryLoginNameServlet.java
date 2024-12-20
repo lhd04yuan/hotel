@@ -1,6 +1,7 @@
 package com.inks.hb.login.controller;
 
 import com.google.gson.Gson;
+import com.inks.hb.common.CaptchaImageUtil;
 import com.inks.hb.common.MD5;
 import com.inks.hb.logInfo.pojo.LogInfo;
 import com.inks.hb.logInfo.service.LogInfoService;
@@ -8,6 +9,7 @@ import com.inks.hb.logInfo.service.LogInfoServiceImpl;
 import com.inks.hb.login.pojo.Login;
 import com.inks.hb.login.service.LoginService;
 import com.inks.hb.login.service.LoginServiceImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +27,7 @@ import java.sql.SQLException;
  */
 @WebServlet(value = "/QueryLoginNameServlet", name = "QueryLoginNameServlet")
 public class QueryLoginNameServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(LoginServiceImpl.class);
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.doGet(request, response);
     }
@@ -42,22 +45,33 @@ public class QueryLoginNameServlet extends HttpServlet {
         // 获得姓名
         String loginName = request.getParameter("loginName");
         String loginPwd = md5.getMD5(request.getParameter("loginPwd"));  //转成MD5存储
-
-        try {
-            int check = service.queryByName(loginName, loginPwd);
-            if (check == 1) { // 设置session
-                HttpSession session = request.getSession();
-                session.setAttribute("LoginName", loginName);
-                Login login = service.queryLogin(loginName);
-                //写入登录记录
-                LogInfo logInfo = new LogInfo("登录", login.getLoginId(), login.getLoginName());
-                LogInfoService logInfoService = new LogInfoServiceImpl();
-                logInfoService.insertLogInfo(logInfo);
+        String loginCode = request.getParameter("loginCode");
+        StringBuffer stringBuffer = CaptchaImageUtil.getStringBuffer();
+        logger.debug("生成的code=" + stringBuffer);
+        logger.debug("客户输入的code=" + loginCode);
+        int check;
+        if (loginCode.contentEquals(stringBuffer)){
+            try {
+                check = service.queryByName(loginName, loginPwd);
+                if (check == 1) { // 设置session
+                    HttpSession session = request.getSession();
+                    session.setAttribute("LoginName", loginName);
+                    Login login = service.queryLogin(loginName);
+                    //写入登录记录
+                    LogInfo logInfo = new LogInfo("登录", login.getLoginId(), login.getLoginName());
+                    LogInfoService logInfoService = new LogInfoServiceImpl();
+                    logInfoService.insertLogInfo(logInfo);
+                }
+                Gson gson = new Gson();
+                out.print(gson.toJson(check));
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+        }else {
+            check = -2;
             Gson gson = new Gson();
             out.print(gson.toJson(check));
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+
     }
 }
