@@ -47,7 +47,6 @@
     </html>
 
 ### 1.2 表格接口
-
     private String code; //数据状态字段
     private String msg; //状态字段名
     private String count; //数据总数
