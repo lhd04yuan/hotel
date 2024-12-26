@@ -15,8 +15,10 @@ public class FloorInfo {
 
     private boolean isNull; //是否为空值对象
 
-    public FloorInfo() {
-        super();
+    public FloorInfo() {}
+
+    public FloorInfo(int floorId) {
+        this.floorId = floorId;
     }
 
     public FloorInfo(int floorId, String floorName) {

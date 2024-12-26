@@ -38,6 +38,9 @@
 				<input type="text" id="tId" class="layui-input" placeholder="ID" readonly>
 			</div>
 			<div class="layui-input-inline">
+				<input type="text" id="tType" class="layui-input" placeholder="类型" readonly>
+			</div>
+			<div class="layui-input-inline">
 				<input type="text" id="tPrice" class="layui-input" placeholder="价格" readonly>
 			</div>
 		</div>
@@ -53,15 +56,19 @@
 
 					$.each(data, function(index, el) {
 						var tId = el.typeId;
+						var tType = el.typeName;
 						var tPrice = el.price;
+						var tIsSplice = el.isSplice.toString() === "Y" ? '是':'否'
 						var html = '';
-						html += '<tr onclick="tId.value=\'' + tId + '\',tPrice.value=\'' + tPrice + '\'" >';
+						html += '<tr onclick="tId.value=\'' + tId + '\',' +
+								'tPrice.value=\'' + tPrice + '\',' +
+								'tType.value=\'' + tType +'\'" >';
 						html += '	<td>' + el.typeId + '</td>';
 						html += '	<td>' + el.typeName + '</td>';
 						html += '	<td>' + el.price + '</td>';
 						html += '	<td>' + el.splicPrice + '</td>';
 						html += '	<td>' + el.exceedance + '</td>';
-						html += '	<td>' + el.isSplice + '</td>';
+						html += '	<td>' + tIsSplice + '</td>';
 						html += '</tr>';
 
 						//追加到表格中

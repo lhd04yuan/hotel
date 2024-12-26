@@ -82,8 +82,11 @@ public class RoomTypeDao implements CommonDao {
         ResultSet rs = pstmt.executeQuery();
 
         int num;
-        if (rs.next()) num = rs.getInt("count(*)");
-        else num = 0;
+        if (rs.next()) {
+            num = rs.getInt("count(*)");
+        } else {
+            num = 0;
+        }
 
         rs.close();
         pstmt.close();

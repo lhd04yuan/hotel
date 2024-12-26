@@ -22,6 +22,7 @@ public class CommonFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
+        request.setCharacterEncoding("UTF-8");
         //设置响应报头允许当前应用被跨域请求（CROS）
         response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -56,6 +57,7 @@ public class CommonFilter implements Filter {
             // 非html和jsp请求一律不管
             chain.doFilter(request, response);
         }
+//        chain.doFilter(request, response);
 
 
         // 请求响应结束之后调用统一关闭连接方法

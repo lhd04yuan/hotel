@@ -92,7 +92,6 @@
 					//按钮点击事件
 					$('#btnLogin').click(function() {
 
-
 						var loginName = $('#loginName').val();
 						var loginPwd = $('#loginPwd').val();
 						var loginCode = $('#loginCode').val();

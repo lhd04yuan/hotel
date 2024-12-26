@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Sky-Sheep
  * @date 2024/12/19 - 10:54
  */
-@WebFilter("/*")
+@WebFilter("/hb/*")
 public class EncodingFilter implements Filter {
     static Logger logger = Logger.getLogger(EncodingFilter.class);
     @Override
@@ -25,7 +25,7 @@ public class EncodingFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         servletRequest.setCharacterEncoding("UTF-8");
         servletResponse.setCharacterEncoding("UTF-8");
-        servletResponse.setContentType("text/html;chareset=UTF-8");
+//        servletResponse.setContentType("text/html;chareset=UTF-8");
         filterChain.doFilter(servletRequest,servletResponse);
     }
 

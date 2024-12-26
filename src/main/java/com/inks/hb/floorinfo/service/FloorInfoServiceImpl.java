@@ -77,7 +77,7 @@ public class FloorInfoServiceImpl implements FloorInfoService {
     @Override
     public FloorInfo query(String floorName) {
         FloorInfo floorInfoQuery = new FloorInfo();
-        floorInfoQuery.setFloorName(floorName);
+        floorInfoQuery.setFloorId(Integer.parseInt(floorName));
 
         try {
             return (FloorInfo) dao.query(floorInfoQuery);

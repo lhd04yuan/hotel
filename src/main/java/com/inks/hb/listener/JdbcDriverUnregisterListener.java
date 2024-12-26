@@ -1,6 +1,10 @@
 package com.inks.hb.listener;
 
 
+import com.inks.hb.common.DBUtil;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.c3p0.impl.C3P0PooledConnection;
+import com.mchange.v2.c3p0.impl.C3P0PooledConnectionPoolManager;
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 import org.apache.log4j.Logger;
 
@@ -18,7 +22,9 @@ import java.util.Enumeration;
  */
 @WebListener
 public class JdbcDriverUnregisterListener implements ServletContextListener {
+
     Logger logger = Logger.getLogger(JdbcDriverUnregisterListener.class);
+
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
@@ -27,6 +33,8 @@ public class JdbcDriverUnregisterListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         AbandonedConnectionCleanupThread.uncheckedShutdown();
         Enumeration<Driver> enumeration = DriverManager.getDrivers();
+        //关闭连接
+        DBUtil.close();
         while (enumeration.hasMoreElements()) {
             try {
                 DriverManager.deregisterDriver(enumeration.nextElement());

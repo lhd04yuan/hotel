@@ -70,6 +70,9 @@
 					</div>
 					<button type="button" class="layui-btn layui-btn-primary" id="buttonTypeId"><i class="layui-icon">&#xe654;</i> 选择</button>
 				</div>
+				<div class="layui-input-inline layui-hide">
+					<input type="text" id="tId" class="layui-input" placeholder="ID" readonly>
+				</div>
 
 			</div>
 
@@ -123,7 +126,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="layui-form-item">
 				<div class="layui-inline">
 					<label class="layui-form-label">预收款</label>
@@ -217,8 +219,9 @@
 						fixed: form,
 						content: './selectRoomType.jsp',
 						yes: function(index, layero) {
-							typeId.value = $(layero).find('iframe')[0].contentWindow.tId.value; //将子窗口中的 tId 抓过来
+							typeId.value = $(layero).find('iframe')[0].contentWindow.tType.value; //将子窗口中的 tId 抓过来
 							price.value = $(layero).find('iframe')[0].contentWindow.tPrice.value;
+							tId.value = $(layero).find('iframe')[0].contentWindow.tId.value;
 							layer.close(index); //关闭弹窗
 						},
 						btn2: function(index) {
@@ -238,7 +241,7 @@
 					var orderName = $('#orderName').val();
 					var orderPhone = $('#orderPhone').val();
 					var orderIDcard = $('#orderIDcard').val();
-					var typeId = $('#typeId').val();
+					var typeId = $('#tId').val();
 
 					//返回数据类型： yyyy-mm-dd hh:mm:ss
 					var orderAllTime = ($('#orderAllTime').val()).split(" | ");

@@ -4,6 +4,7 @@ import com.inks.hb.common.CommonDao;
 import com.inks.hb.common.DBUtil;
 import com.inks.hb.login.pojo.Login;
 import com.inks.hb.orderinfo.pojo.OrderInfo;
+import com.inks.hb.roomtype.dao.RoomTypeDao;
 import com.inks.hb.roomtype.pojo.RoomType;
 
 import java.sql.Connection;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
  * 另提供queryOrder-> 对预定人名称和房间类型的查询
  */
 public class OrderInfoDao implements CommonDao {
+
+    private RoomTypeDao roomTypeDao = new RoomTypeDao();
 
     /**
      * 插入函数关联内容如下：
@@ -143,12 +146,15 @@ public class OrderInfoDao implements CommonDao {
         pstmt.setInt(2, length);
         ResultSet rs = pstmt.executeQuery();
 
+
         ArrayList<OrderInfo> list = new ArrayList<>();
         OrderInfo orderInfo;
 
         while (rs.next()) {
+            //查询房间类型
+            RoomType roomType = (RoomType)roomTypeDao.query(new RoomType(rs.getString(5)));
             orderInfo = new OrderInfo(rs.getString(1), rs.getString(2), rs.getString(3)
-                    , rs.getString(4), new RoomType(rs.getString(5)), rs.getString(6)
+                    , rs.getString(4), roomType, rs.getString(6)
                     , rs.getString(7), rs.getString(8), rs.getString(9)
                     , rs.getString(10), rs.getString(11), rs.getString(12)
                     , rs.getInt(13), rs.getString(14), rs.getString(15)
@@ -162,6 +168,7 @@ public class OrderInfoDao implements CommonDao {
 
         return list;
     }
+
 
     @Override
     public Object query(Object o) throws SQLException {

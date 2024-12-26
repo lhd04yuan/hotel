@@ -25,6 +25,7 @@ public class LogInfoDao implements CommonDao {
 
         ps.executeUpdate();
         ps.close();
+
     }
 
     @Override

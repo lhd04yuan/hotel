@@ -22,18 +22,7 @@
 						<a href="../orderInfo/orderTable.jsp" target="search">预订单</a>
 					</li>
 					<li class="layui-nav-item" lay-unselect>
-						<a href="此处填充地址" target="search">入住单</a>
-					</li>
-					<li class="layui-nav-item" lay-unselect>
-						<a href="此处填充地址" target="search">账单明细</a>
-					</li>
-				</ul>
-				<ul class="layui-nav layui-layout-right">
-					<li class="layui-nav-item" lay-unselect>
-						<a href="此处填充地址" target="search">预订单历史</a>
-					</li>
-					<li class="layui-nav-item" lay-unselect>
-						<a href="此处填充地址" target="search">入住单历史</a>
+						<a href="../checkInInfo/checkInTable.jsp" target="search">入住单</a>
 					</li>
 				</ul>
 			</div>

@@ -107,9 +107,9 @@ public class FloorInfoDao implements CommonDao {
 
         Connection conn = DBUtil.getConnection();
 
-        String sql = "SELECT * FROM floorInfo WHERE floorName = ?";
+        String sql = "SELECT * FROM floorInfo WHERE floorId = ?";
         PreparedStatement pstms = conn.prepareStatement(sql);
-        pstms.setString(1, floorInfoQuery.getFloorName());
+        pstms.setInt(1, floorInfoQuery.getFloorId());
         ResultSet rs = pstms.executeQuery();
 
         FloorInfo floorInfo = null;
