@@ -35,7 +35,14 @@ public class CheckInInfoServiceImpl implements CheckInInfoService {
 
     @Override
     public int updateOrderInfo(CheckIn checkIn) {
-        return 0;
+        try {
+            checkInInfoDao.updateData(checkIn);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode() + e.getMessage());
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
     }
 
     @Override

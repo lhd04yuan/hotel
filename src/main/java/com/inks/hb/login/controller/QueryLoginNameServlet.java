@@ -47,14 +47,16 @@ public class QueryLoginNameServlet extends HttpServlet {
         String loginPwd = md5.getMD5(request.getParameter("loginPwd"));  //转成MD5存储
         String loginCode = request.getParameter("loginCode");
         StringBuffer stringBuffer = CaptchaImageUtil.getStringBuffer();
+        HttpSession session = request.getSession();
+        Object loginNameHistory = session.getAttribute("LoginName");
         logger.debug("生成的code=" + stringBuffer);
         logger.debug("客户输入的code=" + loginCode);
         int check;
-        if (loginCode.contentEquals(stringBuffer)){
+        if (loginNameHistory != null || loginCode.contentEquals(stringBuffer)) {
             try {
                 check = service.queryByName(loginName, loginPwd);
                 if (check == 1) { // 设置session
-                    HttpSession session = request.getSession();
+
                     session.setAttribute("LoginName", loginName);
                     Login login = service.queryLogin(loginName);
                     //写入登录记录

@@ -21,7 +21,7 @@
 
 <body>
 <fieldset class="layui-elem-field layui-field-title " style="margin-top: 20px;">
-    <legend>酒店管理 - 预订单</legend>
+    <legend>酒店管理 - 入住单</legend>
 </fieldset>
 
 <form class="layui-form">
@@ -41,7 +41,6 @@
         </div>
     </div>
     <div class="layui-form-item">
-
         <div class="layui-inline">
             <label class="layui-form-label">预定单号</label>
             <div class="layui-input-block">
@@ -158,7 +157,7 @@
             <div class="layui-input-inline">
                 <select name="orderState" class="layui-input-inline" id="orderState">
                     <option value="预定">预定</option>
-                    <option value="入住">入住</option>
+                    <option value="入住" selected>入住</option>
                     <option value="结算">结算</option>
                     <option value="延期">延期</option>
                 </select>
@@ -189,12 +188,12 @@
             laydate = layui.laydate;
         var isAddBed = false;
 
-        var orderId = getCookie("orderId");
-        deleteCookie("orderId"); //取到值就麻溜的删
-        var queryId = "orderId=" + orderId;
+        var checkId = getCookie("checkId");
+        deleteCookie("checkId"); //取到值就麻溜的删
+        var queryId = "checkId=" + checkId;
 
         // 开始赋值
-        $.post(baseUrl + '/QueryOrderInfoServlet', queryId, function(orderInfo) {
+        $.post(baseUrl + 'queryCheckInInfoServlet', queryId, function(orderInfo) {
             var obj = JSON.parse(orderInfo);
             $("#orderId").val(orderId);
             $("#orderName").val(obj.orderName);
@@ -267,7 +266,7 @@
                 btn: ['确定', '取消'],
                 area: ['750', '360px'],
                 fixed: form,
-                content: './selectRoomType.jsp',
+                content: 'hb/webpage/orderInfo/selectRoomType.jsp',
                 yes: function(index, layero) {
                     typeId.value = $(layero).find('iframe')[0].contentWindow.tId.value; //将子窗口中的 tId 抓过来
                     price.value = $(layero).find('iframe')[0].contentWindow.tPrice.value;
@@ -285,7 +284,8 @@
 
         //监听提交
         form.on('submit(insertRome)', function(data) {
-
+            var checkId = $('#checkId').val();
+            var floorName = $('floorName').val();
             //先获取值
             var orderId = $('#orderId').val();
             var orderName = $('#orderName').val();
@@ -314,14 +314,14 @@
             var operatorId = getCookie("loginName");
             var remark = $('#remark').val();
 
-            var params = "orderId=" + orderId + "&orderName=" + orderName + "&orderPhone=" + orderPhone +
+            var params = "checkId=" + checkId + "floorName=" + floorName +"orderId=" + orderId + "&orderName=" + orderName + "&orderPhone=" + orderPhone +
                 "&orderIDcard=" + orderIDcard + "&typeId=" + typeId + "&arrireDate=" + arrireDate +
                 "&leaveDate=" + leaveDate + "&orderState=" + orderState + "&checkNum=" + checkNum +
                 "&price=" + price + "&checkPrice=" + checkPrice + "&discount=" + discount +
                 "&discountReason=" + discountReason + "&addBed=" + addBed + "&addBedPrice=" + addBedPrice +
                 "&orderMoney=" + orderMoney + "&operatorId=" + operatorId + "&remark=" + remark + "&make=2";
 
-            $.post(baseUrl + '/InsertAndUpdateServlet', params, function(data) {
+            $.post(baseUrl + '/insertAndUpdateCheckInServlet', params, function(data) {
                 if(data === '1') {
                     layer.alert('修改登记单成功！', {
                         title: '修改成功',

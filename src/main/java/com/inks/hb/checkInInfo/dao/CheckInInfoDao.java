@@ -3,6 +3,9 @@ package com.inks.hb.checkInInfo.dao;
 import com.inks.hb.checkInInfo.pojo.CheckIn;
 import com.inks.hb.common.CommonDao;
 import com.inks.hb.common.DBUtil;
+import com.inks.hb.floorinfo.dao.FloorInfoDao;
+import com.inks.hb.floorinfo.pojo.FloorInfo;
+import com.inks.hb.floorinfo.service.FloorInfoServiceImpl;
 import com.inks.hb.login.pojo.Login;
 import com.inks.hb.orderinfo.pojo.OrderInfo;
 import com.inks.hb.roomInfo.dao.RoomInfoDao;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 public class CheckInInfoDao implements CommonDao {
     private RoomTypeDao roomTypeDao = new RoomTypeDao();
     private RoomInfoDao roomInfoDao = new RoomInfoDao();
+    private FloorInfoDao floorInfoDao = new FloorInfoDao();
     @Override
     public void insertData(Object o) throws SQLException {
         CheckIn checkIn = (CheckIn) o;
@@ -73,7 +77,36 @@ public class CheckInInfoDao implements CommonDao {
 
     @Override
     public void updateData(Object o) throws SQLException {
-
+        CheckIn checkIn = (CheckIn) o;
+        Connection conn = DBUtil.getConnection();
+        RoomInfo roomInfo = (RoomInfo) roomInfoDao.query(checkIn.getRoomId());
+        FloorInfo floorInfo = (FloorInfo) floorInfoDao.query(roomInfo.getFloorId());
+        String sql = "UPDATE checkininfo SET  orderName = ? ,orderPhone = ? ,orderIDcard = ?,floorName = ? ,typeId = ? " +
+                ",arrireDate = ? ,leaveDate = ? ,orderState = ? ,checkNum = ? ,roomId = ? ,price = ? ,checkPrice = ? " +
+                ",discount = ? ,discountReason = ? ,addBed = ? ,addBedPrice = ? ,orderMoney = ? ,remark = ? " +
+                ",operatorId = ? WHERE orderId = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, checkIn.getOrderName());
+        pstmt.setString(2, checkIn.getOrderPhone());
+        pstmt.setString(3, checkIn.getOrderIDcard());
+        pstmt.setString(4, floorInfo.getFloorName());
+        pstmt.setString(5, checkIn.getTypeId().getTypeId());
+        pstmt.setString(6, checkIn.getArrireDate());
+        pstmt.setString(7, checkIn.getLeaveDate());
+        pstmt.setString(8, checkIn.getOrderState());
+        pstmt.setString(9, checkIn.getCheckNum());
+        pstmt.setString(10, checkIn.getPrice());
+        pstmt.setString(11, checkIn.getCheckPrice());
+        pstmt.setInt(12, checkIn.getDiscount());
+        pstmt.setString(13, checkIn.getDiscountReason());
+        pstmt.setString(14, checkIn.getAddBed());
+        pstmt.setString(15, checkIn.getAddBedPrice());
+        pstmt.setString(16, checkIn.getOrderMoney());
+        pstmt.setString(17, checkIn.getRemark());
+        pstmt.setString(18, checkIn.getOperatorId().getLoginName());
+        pstmt.setString(19, checkIn.getOrderId());
+        pstmt.executeUpdate();
+        pstmt.close();
     }
 
     @Override
